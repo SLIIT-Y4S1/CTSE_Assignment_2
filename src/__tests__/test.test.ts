@@ -63,7 +63,6 @@ describe("test", () => {
           `/api/v1/test/${new mongoose.Types.ObjectId().toString()}`
         );
         expect(statusCode).toBe(400);
-        console.log("body", body);
       });
     });
   });
