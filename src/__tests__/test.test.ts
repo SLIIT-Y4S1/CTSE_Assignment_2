@@ -1,12 +1,9 @@
-import { date } from "zod";
 import supertest from "supertest";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
 import createServer from "../utils/server";
 
 import mongoose from "mongoose";
-
-import { TestInput } from "../models/test.model";
 
 const app = createServer();
 
