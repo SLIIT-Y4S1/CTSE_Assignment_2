@@ -1,12 +1,9 @@
-import { date } from "zod";
 import supertest from "supertest";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
 import createServer from "../utils/server";
 
 import mongoose from "mongoose";
-
-import { TestInput } from "../models/test.model";
 
 const app = createServer();
 
@@ -30,13 +27,9 @@ describe("test", () => {
   describe("create test route", () => {
     describe("given the required payload", () => {
       it("should return a 201", async () => {
-        const { statusCode, body } = await supertest(app)
+        const { statusCode } = await supertest(app)
           .post("/api/v1/test")
           .send(sitePayload);
-
-        console.log("body", body);
-
-        test = body.id;
 
         expect(statusCode).toBe(201);
       });
@@ -63,8 +56,19 @@ describe("test", () => {
     // negative test case
     describe("given the required testId is invalid", () => {
       it("should return a 400", async () => {
-        const { statusCode } = await supertest(app).get(`/api/v1/test/invalid`);
-        expect(statusCode).toBe(409);
+        const { statusCode, body } = await supertest(app).get(
+          `/api/v1/test/${new mongoose.Types.ObjectId().toString()}`
+        );
+        expect(statusCode).toBe(400);
+      });
+    });
+  });
+
+  describe("get test list route", () => {
+    describe("given the test entries are alreadycreated ", () => {
+      it("should return a 200", async () => {
+        const { statusCode } = await supertest(app).get("/api/v1/test");
+        expect(statusCode).toBe(200);
       });
     });
   });
