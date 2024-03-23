@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { createTestService, findTestService } from "./../service/test.service";
+import {
+  createTestService,
+  findTestService,
+  listTestService,
+} from "./../service/test.service";
 import { CreateTestInput, GetTestInput } from "../schema/test.schema";
 
 import logger from "../utils/logger";
@@ -14,7 +18,7 @@ export const createTestHandler = async (
     return res.status(201).send(test);
   } catch (error: any) {
     logger.error(error);
-    return res.status(409).send(error.message);
+    return res.status(400).send(error.message);
   }
 };
 
@@ -28,6 +32,18 @@ export const getTestHandler = async (
     return res.send(test);
   } catch (error: any) {
     logger.error(error);
-    return res.status(409).send(error.message);
+    return res.status(400).send(error.message);
+  }
+};
+
+export const getTestListHandler = async (req: Request, res: Response) => {
+  try {
+    const testList = await listTestService();
+    return res.send(testList);
+  } catch (error: any) {
+    logger.error(error);
+    return res
+      .status(400)
+      .send("An error occurred while fetching the test list");
   }
 };

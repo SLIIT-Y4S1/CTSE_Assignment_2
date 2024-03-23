@@ -5,9 +5,13 @@ export const createTestService = async (input: TestInput) => {
 };
 
 export const findTestService = async (testId: any) => {
-  const testDocument = TestModel.findById(testId);
+  const testDocument = await TestModel.findById(testId);
   if (!testDocument) {
     throw new Error("Document not found");
   }
   return testDocument;
+};
+
+export const listTestService = async () => {
+  return TestModel.find();
 };
