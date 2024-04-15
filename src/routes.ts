@@ -8,6 +8,9 @@ function routes(app: Express) {
   );
 
   app.use("/api/v1/test", testRoutes);
+  app.get("/api/v1/test-2", (req: Request, res: Response) =>
+    res.send("Test-2 working")
+  );
 }
 
 export default routes;
