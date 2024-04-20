@@ -1,10 +1,11 @@
-FROM --platform=linux/X86_64 node:alpine
+FROM --platform=linux/X86_64 node:lts-alpine
 
-WORKDIR /app
-COPY package.json .
-RUN npm install
+WORKDIR /product-service
+COPY package*.json ./
+RUN npm install --global npm@latest
+RUN npm ci --omit=dev
 COPY . .
 RUN npm run build
 EXPOSE 5000
 
-CMD [ "node", "build/app.js"]
+CMD [ "node", "build/server.js"]
