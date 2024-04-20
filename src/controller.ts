@@ -28,6 +28,30 @@ export const getProducts = async (req: Request, res: Response) => {
   }
 };
 
+
+export const createProduct = async (req: Request, res: Response) => {
+  try {
+    const result = await service.createProduct(req.body);
+    const response = {
+      status: "Product created",
+      data: result,
+    };
+    res.status(201).send(response);
+    logger.info(response.status);
+  } catch (error) {
+    const response = {
+      status: "Product not created",
+      error: error,
+    };
+    res.status(400).send(response);
+    logger.error(response.status);
+  } finally {
+    requestCounter
+      .labels(req.method, req.path, res.statusCode.toString())
+      .inc();
+  }
+};
+
 /**
  * Expose the metrics for Prometheus to scrape
  * @param req
