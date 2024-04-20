@@ -22,7 +22,44 @@ describe("Main Test Suite", () => {
     await mongoose.connection.close();
     await mongoServer.stop();
   });
+  /**
+   * Test the POST route to create a product
+   */
+  describe("POST /", () => {
+    it("should create a product", async () => {
+      const testProduct = {
+        name: "Product 1",
+        category: "Category 1",
+        unitPrice: 200,
+        quantity: 10,
+        unitOfMeasure: "bottles",
+        reorderLevel: 5,
+      };
 
+      const response = await request(app).post("/").send(testProduct);
+
+      expect(response.statusCode).toBe(201);
+      expect(response.body).toHaveProperty("status");
+      expect(response.body).toHaveProperty("data");
+      expect(response.body.data).toBeInstanceOf(Object);
+      expect(response.body.data).toHaveProperty("_id");
+      expect(response.body.data).toHaveProperty("name");
+      expect(response.body.data).toHaveProperty("category");
+      expect(response.body.data).toHaveProperty("unitPrice");
+      expect(response.body.data).toHaveProperty("quantity");
+      expect(response.body.data).toHaveProperty("unitOfMeasure");
+      expect(response.body.data).toHaveProperty("reorderLevel");
+      expect(response.body.status).toBe("Product created");
+      expect(response.body.data.name).toEqual(testProduct.name);
+      expect(response.body.data.category).toEqual(testProduct.category);
+      expect(response.body.data.unitPrice).toEqual(testProduct.unitPrice);
+      expect(response.body.data.quantity).toEqual(testProduct.quantity);
+      expect(response.body.data.unitOfMeasure).toEqual(
+        testProduct.unitOfMeasure
+      );
+      expect(response.body.data.reorderLevel).toEqual(testProduct.reorderLevel);
+    });
+  });
   /**
    * Test the GET route to return all products
    */
