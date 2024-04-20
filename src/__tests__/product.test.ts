@@ -75,6 +75,126 @@ describe("Main Test Suite", () => {
     });
   });
 
+  describe("GET /api/v1/:id", () => {
+    /**
+     * Success test case
+     */
+    it("should return a product", async () => {
+      const response1 = await request(app).get("/api/v1/");
+      const response2 = await request(app).get(
+        `/api/v1/${response1.body.data[0]._id}`
+      );
+
+      expect(response2.statusCode).toBe(200);
+      expect(response2.body).toHaveProperty("status");
+      expect(response2.body).toHaveProperty("data");
+      expect(response2.body.status).toBe("Product found");
+      expect(response2.body.data).toBeInstanceOf(Object);
+      expect(response2.body.data).toHaveProperty("_id");
+      expect(response2.body.data).toHaveProperty("name");
+      expect(response2.body.data).toHaveProperty("category");
+      expect(response2.body.data).toHaveProperty("unitPrice");
+      expect(response2.body.data).toHaveProperty("quantity");
+      expect(response2.body.data).toHaveProperty("unitOfMeasure");
+      expect(response2.body.data).toHaveProperty("reorderLevel");
+      expect(response2.body.data).toHaveProperty("__v");
+    });
+
+    /**
+     * Failure test case
+     */
+    it("should not return a product", async () => {
+      const characters: string = "abcdefghijklmnopqrstuvwxyz0123456789";
+      let invalidTestId: string = "";
+
+      for (let i = 0; i < 24; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        invalidTestId += characters[randomIndex];
+      }
+
+      const response = await request(app).get(`/api/v1/${invalidTestId}`);
+
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toHaveProperty("status");
+      expect(response.body).toHaveProperty("error");
+      expect(response.body.status).toBe("Product not found");
+    });
+  });
+
+  /**
+     * Test the PUT route to update a specific product
+     */
+  describe("PUT /api/v1/:id", () => {
+    it("should update a product", async () => {
+      const response1 = await request(app).get("/api/v1/");
+      const testProduct = {
+        name: "Product 2",
+        category: "Category 2",
+        unitPrice: 300,
+        quantity: 20,
+        unitOfMeasure: "packs",
+        reorderLevel: 10,
+      };
+
+      const response2 = await request(app)
+        .put(`/api/v1/${response1.body.data[0]._id}`)
+        .send(testProduct);
+
+      expect(response2.statusCode).toBe(200);
+      expect(response2.body).toHaveProperty("status");
+      expect(response2.body).toHaveProperty("data");
+      expect(response2.body.status).toBe("Product updated");
+      expect(response2.body.data).toBeInstanceOf(Object);
+      expect(response2.body.data).toHaveProperty("_id");
+      expect(response2.body.data).toHaveProperty("name");
+      expect(response2.body.data).toHaveProperty("category");
+      expect(response2.body.data).toHaveProperty("unitPrice");
+      expect(response2.body.data).toHaveProperty("quantity");
+      expect(response2.body.data).toHaveProperty("unitOfMeasure");
+      expect(response2.body.data).toHaveProperty("reorderLevel");
+      expect(response2.body.data.name).toEqual(testProduct.name);
+      expect(response2.body.data.category).toEqual(testProduct.category);
+      expect(response2.body.data.unitPrice).toEqual(testProduct.unitPrice);
+      expect(response2.body.data.quantity).toEqual(testProduct.quantity);
+      expect(response2.body.data.unitOfMeasure).toEqual(
+        testProduct.unitOfMeasure
+      );
+      expect(response2.body.data.reorderLevel).toEqual(
+        testProduct.reorderLevel
+      );
+    });
+
+    it("should not update a product", async () => {
+      const characters: string = "abcdefghijklmnopqrstuvwxyz0123456789";
+      let invalidTestId: string = "";
+
+      for (let i: number = 0; i < 24; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        invalidTestId += characters[randomIndex];
+      }
+
+      const testProduct = {
+        name: "Product 3",
+        category: "Category 3",
+        unitPrice: 400,
+        quantity: 30,
+        unitOfMeasure: "boxes",
+        reorderLevel: 15,
+      };
+
+      const response = await request(app)
+        .put(`/api/v1/${invalidTestId}`)
+        .send(testProduct);
+
+      expect(response.statusCode).toBe(400);
+      expect(response.body).toHaveProperty("status");
+      expect(response.body).toHaveProperty("error");
+      expect(response.body.status).toBe("Product not updated");
+    });
+  });
+
+
+
   /**
    * Test the DELETE route to delete a specific product
    */

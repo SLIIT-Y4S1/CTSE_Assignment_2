@@ -89,3 +89,52 @@ export const getMetrics = async (req: Request, res: Response) => {
     logger.error(response.status);
   }
 };
+
+
+
+export const getProductById = async (req: Request, res: Response) => {
+  try {
+    const result = await service.getProductById(req.params.id);
+    const response = {
+      status: "Product found",
+      data: result,
+    };
+    res.status(200).send(response);
+    logger.info(response.status);
+  } catch (error) {
+    const response = {
+      status: "Product not found",
+      error: error,
+    };
+    res.status(400).send(response);
+    logger.error(response.status);
+  } finally {
+    requestCounter
+      .labels(req.method, req.path, res.statusCode.toString())
+      .inc();
+  }
+};
+
+
+export const updateProductById = async (req: Request, res: Response) => {
+  try {
+    const result = await service.updateProductById(req.params.id, req.body);
+    const response = {
+      status: "Product updated",
+      data: result,
+    };
+    res.status(200).send(response);
+    logger.info(response.status);
+  } catch (error) {
+    const response = {
+      status: "Product not updated",
+      error: error,
+    };
+    res.status(400).send(response);
+    logger.error(response.status);
+  } finally {
+    requestCounter
+      .labels(req.method, req.path, res.statusCode.toString())
+      .inc();
+  }
+};
