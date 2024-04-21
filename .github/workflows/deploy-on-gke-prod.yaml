@@ -1,8 +1,10 @@
 name: Deploy to GKE
 
 on:
-  push:
-    branches: ["main"]
+  workflow_run:
+    workflows:
+      - Deploy Docker Image to Artifact Registry
+    types: completed
 
 env:
   PROJECT_ID: ${{ secrets.GOOGLE_PROJECT }}
@@ -42,5 +44,6 @@ jobs:
         run: |
           gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_ZONE
           sed -i "s/GCP_PROJECT_ID/${GCP_PROJECT_ID}/g" ./k8s/deployment.yaml
+          sed -i "s/IMAGE_TAG/${GITHUB_SHA}/g" ./k8s/deployment.yaml
           kubectl apply -f ./k8s/deployment.yaml
           kubectl apply -f ./k8s/service.yaml
