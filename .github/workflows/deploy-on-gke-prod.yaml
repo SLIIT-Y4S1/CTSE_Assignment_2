@@ -11,8 +11,8 @@ env:
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
 
 jobs:
-  setup-build-publish-deploy:
-    name: Setup, Build, Publish, and Deploy
+  Deploy-to-GKE:
+    name: Deploy to GKE
     runs-on: ubuntu-latest
 
     permissions:
@@ -31,6 +31,7 @@ jobs:
 
       - name: Deploy to GKE
         run: |
+          gcloud components install gke-gcloud-auth-plugin
           gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_ZONE
           sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" ./k8s/deployment.yaml
           kubectl apply -f ./k8s/deployment.yaml
