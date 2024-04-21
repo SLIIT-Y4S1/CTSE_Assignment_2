@@ -50,11 +50,11 @@ jobs:
           gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_REGION --project $GCP_PROJECT_ID
           sed -i "s/GCP_PROJECT_ID/$GCP_PROJECT_ID/g" ./k8s/deployment.yaml
           sed -i "s/IMAGE_TAG/$GITHUB_SHA/g" ./k8s/deployment.yaml
-          sed -i "s/SECRET_MONGO_URI/$SECRET_MONGO_URI/g" ./k8s/deployment.yaml
-          sed -i "s/SECRET_DB_NAME/$SECRET_DB_NAME/g" ./k8s/deployment.yaml
-          sed -i "s/SECRET_PORT/$SECRET_PORT/g" ./k8s/deployment.yaml
-          sed -i "s/SECRET_GRAFANA_LOKI_HOST/$SECRET_GRAFANA_LOKI_HOST/g" ./k8s/deployment.yaml
-          sed -i "s/SECRET_GRAFANA_LOKI_USERID/$SECRET_GRAFANA_LOKI_USERID/g" ./k8s/deployment.yaml
-          sed -i "s/SECRET_GRAFANA_LOKI_API_TOKEN/$SECRET_GRAFANA_LOKI_API_TOKEN/g" ./k8s/deployment.yaml
+          # sed -i "s/SECRET_MONGO_URI/$SECRET_MONGO_URI/g" ./k8s/deployment.yaml
+          # sed -i "s/SECRET_DB_NAME/$SECRET_DB_NAME/g" ./k8s/deployment.yaml
+          # sed -i "s/SECRET_PORT/$SECRET_PORT/g" ./k8s/deployment.yaml
+          # sed -i "s/SECRET_GRAFANA_LOKI_HOST/$SECRET_GRAFANA_LOKI_HOST/g" ./k8s/deployment.yaml
+          # sed -i "s/SECRET_GRAFANA_LOKI_USERID/$SECRET_GRAFANA_LOKI_USERID/g" ./k8s/deployment.yaml
+          # sed -i "s/SECRET_GRAFANA_LOKI_API_TOKEN/$SECRET_GRAFANA_LOKI_API_TOKEN/g" ./k8s/deployment.yaml
           kubectl apply -f ./k8s/deployment.yaml
           kubectl apply -f ./k8s/service.yaml
