@@ -29,9 +29,21 @@ jobs:
         with:
           credentials_json: ${{ secrets.GOOGLE_PROJECT }}
 
+      - name: Install gcloud CLI
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GOOGLE_PROJECT }}
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+        with:
+          project_id: ${{ secrets.GOOGLE_PROJECT }}
+          install_components: "gke-gcloud-auth-plugin"
+
+      - name: "Use gcloud CLI"
+        run: "gcloud info"
       - name: Deploy to GKE
         run: |
-          sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
           gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_ZONE
           sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" ./k8s/deployment.yaml
           kubectl apply -f ./k8s/deployment.yaml
