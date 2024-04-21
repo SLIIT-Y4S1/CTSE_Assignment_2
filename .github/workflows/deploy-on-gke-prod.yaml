@@ -38,9 +38,9 @@ jobs:
 
       - name: Deploy to GKE
         env:
-          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
         run: |
           gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_ZONE
-          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" ./k8s/deployment.yaml
+          sed -i "s/GCP_PROJECT_ID/${GCP_PROJECT_ID}/g" ./k8s/deployment.yaml
           kubectl apply -f ./k8s/deployment.yaml
           kubectl apply -f ./k8s/service.yaml
