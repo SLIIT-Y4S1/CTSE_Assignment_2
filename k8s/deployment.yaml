@@ -14,6 +14,5 @@ spec:
       containers:
         - name: productservice
           image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/ctse-docker-image/product-service:latest
-          resources:
           ports:
             - containerPort: 5000
