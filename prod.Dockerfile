@@ -2,7 +2,7 @@ FROM --platform=linux/X86_64 node:20-alpine
 
 WORKDIR /home/product-service
 
-COPY package*.json ./
+COPY package.json ./
 
 RUN npm install --global npm@latest
 
