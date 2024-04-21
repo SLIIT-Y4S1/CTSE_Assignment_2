@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productservice
+spec:
+  selector:
+    matchLabels:
+      app: productservice
+  template:
+    metadata:
+      labels:
+        app: productservice
+    spec:
+      containers:
+        - name: productservice
+          image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/ctse-docker-image/product-service:latest
+          resources:
+          ports:
+            - containerPort: 5000
