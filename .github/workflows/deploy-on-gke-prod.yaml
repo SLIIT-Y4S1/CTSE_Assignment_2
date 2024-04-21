@@ -23,12 +23,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - id: "auth"
-        name: "Authenticate to Google Cloud"
-        uses: "google-github-actions/auth@v0"
-        with:
-          credentials_json: ${{ secrets.GOOGLE_PROJECT }}
-
       - name: Install gcloud CLI
         uses: google-github-actions/auth@v2
         with:
@@ -42,6 +36,13 @@ jobs:
 
       - name: "Use gcloud CLI"
         run: "gcloud info"
+
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v0"
+        with:
+          credentials_json: ${{ secrets.GOOGLE_PROJECT }}
+
       - name: Deploy to GKE
         run: |
           gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_ZONE
