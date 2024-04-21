@@ -23,11 +23,15 @@ jobs:
       - run: npm test
 
       - name: Install gcloud CLI
-        uses: google-github-actions/setup-gcloud@v0
+        uses: google-github-actions/auth@v2
         with:
-          project_id: ${{ secrets.GOOGLE_PROJECT }}
-          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-          export_default_credentials: true
+          credentials_json: "${{ secrets.GOOGLE_PROJECT }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+
+      - name: "Use gcloud CLI"
+        run: "gcloud info"
 
       - name: Build and push Docker image to GAR
         env:
@@ -35,5 +39,5 @@ jobs:
           GOOGLE_REGION: us-central1
         run: |
           gcloud auth configure-docker $GOOGLE_REGION-docker.pkg.dev
-          docker build -f dockerfiles/prod.Dockerfile -t us-central1-docker.pkg.dev/conductive-bank-377916/ctse-docker-image/product-service:$GITHUB_SHA .
+          docker build -f dockerfiles/prod.Dockerfile -t us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/ctse-docker-image/product-service:$GITHUB_SHA .
           docker push us-central1-docker.pkg.dev/conductive-bank-377916/ctse-docker-image/product-service:$GITHUB_SHA
