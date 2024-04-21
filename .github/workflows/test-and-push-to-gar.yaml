@@ -39,5 +39,5 @@ jobs:
           GOOGLE_REGION: us-central1
         run: |
           gcloud auth configure-docker $GOOGLE_REGION-docker.pkg.dev
-          docker build -f ./prod.Dockerfile -t us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/ctse-docker-image/product-service:$GITHUB_SHA .
+          docker build -f dockerfiles/prod.Dockerfile -t us-central1-docker.pkg.dev/${{secrets.GCP_PROJECT_ID}}/ctse-docker-image/product-service:$GITHUB_SHA .
           docker push us-central1-docker.pkg.dev/conductive-bank-377916/ctse-docker-image/product-service:$GITHUB_SHA
