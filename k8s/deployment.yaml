@@ -14,6 +14,37 @@ spec:
       containers:
         - name: productservice
           image: us-central1-docker.pkg.dev/GCP_PROJECT_ID/ctse-docker-image/product-service:IMAGE_TAG
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: ctse-secrets
+                  key: MONGO_URI
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: ctse-secrets
+                  key: DB_NAME
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: ctse-secrets
+                  key: PORT
+            - name: GRAFANA_LOKI_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: ctse-secrets
+                  key: GRAFANA_LOKI_HOST
+            - name: GRAFANA_LOKI_USERID
+              valueFrom:
+                secretKeyRef:
+                  name: ctse-secrets
+                  key: GRAFANA_LOKI_USERID
+            - name: GRAFANA_LOKI_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ctse-secrets
+                  key: GRAFANA_LOKI_API_TOKEN
           resources:
             limits:
               memory: "128Mi"
