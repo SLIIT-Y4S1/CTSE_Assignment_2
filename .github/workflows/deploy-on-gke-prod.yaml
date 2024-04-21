@@ -41,6 +41,6 @@ jobs:
           GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
         run: |
           gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_ZONE
-          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" k8s/deployment.yaml
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/service.yaml
+          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" ./k8s/deployment.yaml
+          kubectl apply -f ./k8s/deployment.yaml
+          kubectl apply -f ./k8s/service.yaml
