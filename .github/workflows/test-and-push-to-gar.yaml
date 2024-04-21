@@ -1,0 +1,39 @@
+name: Deploy Docker Image to Artifact Registry
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.x"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+
+      - name: Install gcloud CLI
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GOOGLE_PROJECT }}
+          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          export_default_credentials: true
+
+      - name: Build and push Docker image to GAR
+        env:
+          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+          GOOGLE_REGION: us-central1
+        run: |
+          gcloud auth configure-docker $GOOGLE_REGION-docker.pkg.dev
+          docker build -f dockerfiles/prod.Dockerfile -t us-central1-docker.pkg.dev/conductive-bank-377916/ctse-docker-image/product-service:$GITHUB_SHA .
+          docker push us-central1-docker.pkg.dev/conductive-bank-377916/ctse-docker-image/product-service:$GITHUB_SHA
