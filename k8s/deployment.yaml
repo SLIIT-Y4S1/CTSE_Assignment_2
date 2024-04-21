@@ -13,6 +13,10 @@ spec:
     spec:
       containers:
         - name: productservice
-          image: us-central1-docker.pkg.dev/GOOGLE_PROJECT/ctse-docker-image/product-service:latest
+          image: us-central1-docker.pkg.dev/${GCP_PROJECT_ID}/ctse-docker-image/product-service:latest
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
           ports:
             - containerPort: 5000
