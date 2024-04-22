@@ -12,9 +12,10 @@ env:
   GKE_REGION: ${{ secrets.GKE_REGION }}
 
 jobs:
-  Deploy-to-GKE:
+  deploy-to-gke:
     name: Deploy to GKE
     runs-on: ubuntu-latest
+    environment: production
 
     permissions:
       contents: "read"
@@ -29,12 +30,12 @@ jobs:
         with:
           credentials_json: ${{ secrets.GOOGLE_PROJECT }}
 
-      - name: "Set up Cloud SDK"
+      - name: Set up Cloud SDK
         uses: "google-github-actions/setup-gcloud@v2"
         with:
           install_components: "gke-gcloud-auth-plugin"
 
-      - name: "Use gcloud CLI"
+      - name: Use gcloud CLI
         run: "gcloud info"
 
       - name: Deploy to GKE
