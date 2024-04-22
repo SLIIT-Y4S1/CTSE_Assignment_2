@@ -28,6 +28,8 @@ spec:
               value: SECRET_GRAFANA_LOKI_USERID
             - name: GRAFANA_LOKI_API_TOKEN
               value: SECRET_GRAFANA_LOKI_API_TOKEN
+            - name: NODE_ENV
+              value: production
           resources:
             limits:
               memory: "128Mi"
