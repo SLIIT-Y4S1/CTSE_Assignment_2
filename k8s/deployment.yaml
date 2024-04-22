@@ -12,6 +12,7 @@ spec:
       labels:
         app: productservice
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: productservice
           image: us-central1-docker.pkg.dev/GCP_PROJECT_ID/ctse-docker-image/product-service:IMAGE_TAG
