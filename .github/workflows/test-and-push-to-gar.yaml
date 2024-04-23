@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  build-and-push-to-gar:
+  test-build-and-push-to-gar:
     runs-on: ubuntu-latest
 
     steps:
