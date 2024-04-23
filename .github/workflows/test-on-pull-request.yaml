@@ -5,7 +5,7 @@ on:
     branches: [main, dev]
 
 jobs:
-  deploy:
+  test-on-pull-request:
     runs-on: ubuntu-latest
 
     steps:
