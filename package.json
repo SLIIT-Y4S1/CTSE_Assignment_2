@@ -31,7 +31,7 @@
     "mongodb-memory-server": "^9.1.8",
     "mongoose": "^8.3.0",
     "nodemon": "^3.1.0",
-    "prom-client": "^15.1.1",
+    "prom-client": "^15.1.2",
     "supertest": "^6.3.4",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
